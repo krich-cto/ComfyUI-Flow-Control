@@ -1,0 +1,14 @@
+{
+    "Flux/iniverseMixSFWNSFW_f1dRealnsfwGuofengV2-Q8_0.gguf": {
+        "vae_name": "ae.safetensors",
+        "clip_name1": "clip_l.safetensors",
+        "clip_name2": "clip_l.safetensors",
+        "base": "Flux",
+        "hash": "8a9b3607b675aea1ab3b7b56ff654b057adbd14537718c4f7ba6df1b82f5c1a0",
+        "steps": 20,
+        "guidance": 3.5,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "url": "https://microsoft.com"
+    }
+}
