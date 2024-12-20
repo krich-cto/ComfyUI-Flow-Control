@@ -1,0 +1,14 @@
+[project]
+name = "comfyui-flow-control"
+description = "This is an Extension for ComfyUI. This project will help you control the flow logic via many controls."
+version = "1.0.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/krich-cto/ComfyUI-Flow-Control"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-Flow-Control"
+Icon = ""
