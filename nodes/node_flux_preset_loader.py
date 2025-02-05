@@ -13,8 +13,9 @@ db_path = get_flow_path("db/flux_checkpoints.json")
 print(f"[Flow Control] Flux presets database : {db_path}")
 
 # Add a custom keys for files ending in .gguf
-orig = folder_paths.folder_names_and_paths.get("diffusion_models", folder_paths.folder_names_and_paths.get("unet", [[], set()]))
-folder_paths.folder_names_and_paths["diffusion_models"] = (orig[0], {".gguf"})
+orig = folder_paths.folder_names_and_paths.get("diffusion_models", [[], set()])
+orig[1].add(".gguf")
+folder_paths.folder_names_and_paths["diffusion_models"] = orig
 
 def load_preset(unet_name):
     db = load_json(db_path)
