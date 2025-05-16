@@ -7,7 +7,8 @@ import os
 from ..node_tools import get_file_name_without_extension, get_flow_path, load_json, save_json, calculate_sha256, get_model_info, map_base
 from .gguf.ops import GGMLTensor, GGMLOps, move_patch_to_device
 from .gguf.dequant import is_quantized, is_torch_compatible
-from .gguf.nodes import gguf_sd_loader, GGUFModelPatcher
+from .gguf.nodes import GGUFModelPatcher
+from .gguf.loader import gguf_sd_loader
 
 db_path = get_flow_path("db/flux_checkpoints.json")
 print(f"[Flow Control] Flux presets database : {db_path}")
