@@ -27,6 +27,8 @@ def load_preset(unet_name):
     vae_name = ckpt_info.get("vae_name", "")
     clip_name1 = ckpt_info.get("clip_name1", "")
     clip_name2 = ckpt_info.get("clip_name2", "")
+    clip_name3 = ckpt_info.get("clip_name3", "")
+    clip_name4 = ckpt_info.get("clip_name4", "")
     base = ckpt_info.get("base", "")
     hash = ckpt_info.get("hash", "")
     steps = ckpt_info.get("steps", 20)
@@ -52,6 +54,8 @@ def load_preset(unet_name):
             "vae_name": vae_name,
             "clip_name1": clip_name1,
             "clip_name2": clip_name2,
+            "clip_name3": clip_name3,
+            "clip_name4": clip_name4,
             "base": base,
             "hash": hash,
             "steps": steps,
@@ -64,9 +68,9 @@ def load_preset(unet_name):
 
     print(f"[Flow Control] {unet_name} : Preset loaded.")   
     
-    return (vae_name, clip_name1, clip_name2, base, hash, steps, guidance, sampler_name, scheduler, url)
+    return (vae_name, clip_name1, clip_name2, clip_name3, clip_name4, base, hash, steps, guidance, sampler_name, scheduler, url)
 
-def save_preset(unet_name, vae_name, clip_name1, clip_name2, base, steps, guidance, sampler_name, scheduler, url):
+def save_preset(unet_name, vae_name, clip_name1, clip_name2, clip_name3, clip_name4, base, steps, guidance, sampler_name, scheduler, url):
     db = load_json(db_path)
 
     ckpt_info = db.get(unet_name, {})
@@ -93,6 +97,8 @@ def save_preset(unet_name, vae_name, clip_name1, clip_name2, base, steps, guidan
         "vae_name": vae_name,
         "clip_name1": clip_name1,
         "clip_name2": clip_name2,
+        "clip_name3": clip_name3,
+        "clip_name4": clip_name4,
         "base": base,
         "hash": hash,
         "steps": steps,
@@ -166,12 +172,14 @@ async def load_ckpt_preset(request):
     body = await request.json()
     unet_name = body.get("unetName")
 
-    (vae_name, clip_name1, clip_name2, base, hash, steps, guidance, sampler_name, scheduler, url) = load_preset(unet_name)
+    (vae_name, clip_name1, clip_name2, clip_name3, clip_name4, base, hash, steps, guidance, sampler_name, scheduler, url) = load_preset(unet_name)
 
     return web.json_response({
         "vaeName": vae_name,
         "clipName1": clip_name1,
         "clipName2": clip_name2,
+        "clipName3": clip_name3,
+        "clipName4": clip_name4,
         "base": base,
         "hash": hash,
         "steps": steps,
@@ -188,6 +196,8 @@ async def save_ckpt_preset(request):
     vae_name = body.get("vaeName")
     clip_name1 = body.get("clipName1")
     clip_name2 = body.get("clipName2")
+    clip_name3 = body.get("clipName3")
+    clip_name4 = body.get("clipName4")
     base = body.get("base")
     steps = body.get("steps")
     guidance = body.get("guidance")
@@ -195,7 +205,7 @@ async def save_ckpt_preset(request):
     scheduler = body.get("scheduler")
     url = body.get("url")
     
-    (vae_name, clip_name1, clip_name2, base, hash, steps, guidance, sampler_name, scheduler, url) = save_preset(unet_name, vae_name, clip_name1, clip_name2, base, steps, guidance, sampler_name, scheduler, url)
+    (vae_name, clip_name1, clip_name2, clip_name3, clip_name4, base, hash, steps, guidance, sampler_name, scheduler, url) = save_preset(unet_name, vae_name, clip_name1, clip_name2, clip_name3, clip_name4, base, steps, guidance, sampler_name, scheduler, url)
 
     return web.json_response({
         "vaeName": vae_name,
@@ -303,6 +313,8 @@ class FlowFluxPresetLoader:
                 "vae_name": (s.vae_list(), ),
                 "clip_name1": (s.clip_list(), ),
                 "clip_name2": (s.clip_list(), ),
+                "clip_name3": (s.clip_list(), ),
+                "clip_name4": (s.clip_list(), ),
                 "base": (["", "Flux"], { "default": "" }),
                 "hash": ("STRING", {"default": ""}),
                 "steps": ("INT", {"default": 20, "min": 1, "max": 10000}),
@@ -319,7 +331,7 @@ class FlowFluxPresetLoader:
 
     CATEGORY = "Flow/inputs"
     
-    def load_flux(self, unet_name, weight_dtype, vae_name, clip_name1, clip_name2, base, hash, steps, guidance, sampler_name, scheduler, url):
+    def load_flux(self, unet_name, weight_dtype, vae_name, clip_name1, clip_name2, clip_name3, clip_name4, base, hash, steps, guidance, sampler_name, scheduler, url):
         print(f"[Flow Control] {unet_name} : Loading...")
 
         if unet_name.endswith(".gguf"):
@@ -329,7 +341,9 @@ class FlowFluxPresetLoader:
 
         clip_path1 = folder_paths.get_full_path_or_raise("text_encoders", clip_name1)
         clip_path2 = folder_paths.get_full_path_or_raise("text_encoders", clip_name2)
-        clip = comfy.sd.load_clip(ckpt_paths=[clip_path1, clip_path2], embedding_directory=folder_paths.get_folder_paths("embeddings"), clip_type=comfy.sd.CLIPType.FLUX)
+        clip_path3 = folder_paths.get_full_path_or_raise("text_encoders", clip_name3)
+        clip_path4 = folder_paths.get_full_path_or_raise("text_encoders", clip_name4)
+        clip = comfy.sd.load_clip(ckpt_paths=[clip_path1, clip_path2, clip_path3, clip_path4], embedding_directory=folder_paths.get_folder_paths("embeddings"), clip_type=comfy.sd.CLIPType.FLUX)
 
         if vae_name in ["taesd", "taesdxl", "taesd3", "taef1"]:
             sd = self.load_taesd(vae_name)

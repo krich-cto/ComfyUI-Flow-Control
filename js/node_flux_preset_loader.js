@@ -6,6 +6,8 @@ function loadPreset(node, unetName) {
 	const vaeNameWidget = getWidget(node, 'vae_name');
 	const clipName1Widget = getWidget(node, 'clip_name1');
 	const clipName2Widget = getWidget(node, 'clip_name2');
+	const clipName3Widget = getWidget(node, 'clip_name3');
+	const clipName4Widget = getWidget(node, 'clip_name4');
 	const baseWidget = getWidget(node, 'base');
 	const hashWidget = getWidget(node, 'hash');
 	const stepsWidget = getWidget(node, 'steps');
@@ -36,6 +38,8 @@ function loadPreset(node, unetName) {
 		vaeNameWidget.value = resp.vaeName;
 		clipName1Widget.value = resp.clipName1;
 		clipName2Widget.value = resp.clipName2;
+		clipName3Widget.value = resp.clipName3;
+		clipName4Widget.value = resp.clipName4;
 		baseWidget.value = resp.base;
 		hashWidget.value = resp.hash;
 		stepsWidget.value = resp.steps;
@@ -61,6 +65,8 @@ export function nodeFluxPresetLoaderCreated(node) {
 	const vaeNameWidget = getWidget(node, 'vae_name');
 	const clipName1Widget = getWidget(node, 'clip_name1');
 	const clipName2Widget = getWidget(node, 'clip_name2');
+	const clipName3Widget = getWidget(node, 'clip_name3');
+	const clipName4Widget = getWidget(node, 'clip_name4');
 	const baseWidget = getWidget(node, 'base');
 	const stepsWidget = getWidget(node, 'steps');
 	const guidanceWidget = getWidget(node, 'guidance');
@@ -80,6 +86,8 @@ export function nodeFluxPresetLoaderCreated(node) {
 			vaeName: vaeNameWidget.value,
 			clipName1: clipName1Widget.value,
 			clipName2: clipName2Widget.value,
+			clipName3: clipName3Widget.value,
+			clipName4: clipName4Widget.value,
 			base: baseWidget.value,
 			steps: stepsWidget.value,
 			guidance: guidanceWidget.value,
